@@ -1,19 +1,19 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import CustomButton from "./CustomButton";
 
 
-const JobCard = ({ removeButton = true }) => {
+const JobCard = ({  onPress }) => {
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={onPress}>
             <Text style={styles.title}>Consultant,Managed Services</Text>
             <Text style={styles.a}>Spinklr</Text>
             <Text style={styles.location}> Bengaluru, India</Text>
             <Text style={styles.level}>Mid Level</Text>
 
-            {removeButton && <CustomButton title="Remove" />}
-        </View>
+            <CustomButton title="Remove" />
+        </TouchableOpacity>
     );
 };
 export default JobCard;

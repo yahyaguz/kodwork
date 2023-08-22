@@ -1,7 +1,7 @@
 import React from "react";
 import { View,Text } from "react-native";
 
-function App()
+function Favorites()
     {
     return(
         <View>
@@ -10,4 +10,4 @@ function App()
     )
 }
 
-export default App;
+export default Favorites;

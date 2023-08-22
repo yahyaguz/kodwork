@@ -2,11 +2,11 @@ import React from "react";
 import { View,Text } from "react-native";
 import JobCard from "../../components/JobCard";
 
-function Jobs()
+function Jobs({navigation})
     {
     return(
         <View>
-            <JobCard/>
+            <JobCard onPress={()=>navigation.navigate("Job Detail")}/>
         </View>
     )
 }
