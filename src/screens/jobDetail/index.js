@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, ScrollView } from "react-native";
 import RenderHTML from "react-native-render-html";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const { width } = Dimensions.get("screen");
@@ -11,9 +11,15 @@ const imageW = width / 15;
 function JobDetail({ route }) {
     const dispatch = useDispatch();
     const { job } = route.params;
+    const favorites = useSelector(f => f?.favoriteList)
+    const isFavorited = favorites?.find(j => job?.id === j?.id)
 
     const handleAddFavorite = () => {
-        dispatch({ type: 'ADD_FAVORITE', payload: { favoritedJob: job } })
+        if (typeof isFavorited === 'undefined') {
+            dispatch({ type: 'ADD_FAVORITE', payload: { favoritedJob: job } })
+        } else {
+            dispatch({ type: 'REMOVE_FAVORITE', payload: { favoritedJob: job } })
+        }
     }
 
 
@@ -45,8 +51,8 @@ function JobDetail({ route }) {
                     <Text style={styles.button_title}>Submit</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => handleAddFavorite()}>
-                    <Image style={styles.icons} source={require("../../assets/images/favorite.png")} />
-                    <Text style={styles.button_title}>Favotite Job</Text>
+                    <Image style={isFavorited ? styles.red_icon : styles.icons} source={require("../../assets/images/favorite.png")} />
+                    <Text style={styles.button_title}>{isFavorited ? 'Favorited' : 'Favotite Job'}</Text>
                 </TouchableOpacity>
             </View>
         </>
@@ -73,7 +79,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ef5350',
         borderRadius: 5,
         margin: 10,
-        flexGrow: 1,
+        width: width / 2.2,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -89,5 +95,11 @@ const styles = StyleSheet.create({
         width: imageW,
         height: imageW,
         margin: 3,
-    }
+    },
+    red_icon: {
+        tintColor: 'red',
+        width: imageW,
+        height: imageW,
+        margin: 3,
+    },
 });

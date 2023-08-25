@@ -16,7 +16,7 @@ const screenOptionStyle = {
 const JobsStackNavigator = () => {
     return (
         <Stack.Navigator screenOptions={screenOptionStyle}>
-            <Stack.Screen name="Jobss" component={Jobs} />
+            <Stack.Screen name="Jobs" component={Jobs} />
             <Stack.Screen name="Job Detail" component={JobDetail} />
             <Stack.Screen name="Favorites" component={Favorites} />
         </Stack.Navigator>

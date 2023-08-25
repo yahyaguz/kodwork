@@ -3,7 +3,6 @@ import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
 
 const JobCard = ({ onPress, job, removeOnPress }) => {
-
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <Text style={styles.title}>{job?.name}</Text>
