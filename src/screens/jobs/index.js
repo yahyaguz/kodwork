@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, Dimensions, FlatList, ActivityIndicator, TouchableOpacity, Image } from "react-native";
+import { View, Dimensions, FlatList, ActivityIndicator, TouchableOpacity, Image, Alert, StyleSheet } from "react-native";
 import JobCard from "../../components/JobCard";
 import axios from "axios";
 
-const { height } = Dimensions.get('screen')
+const { height } = Dimensions.get('window')
 
 function Jobs({ navigation }) {
 
     let listViewRef;
     const [currentPage, setCurrentPage] = useState(0);
-    const [arrowStatus, setArrowStatus] = useState(false);
-    const [loading, setLoading] = useState(null);
+    const [arrowStatus, setArrowStatus] = useState(0);
+    const [loading, setLoading] = useState(true);
     const [jobs, setJobs] = useState([]);
 
     useEffect(() => {
@@ -21,30 +21,40 @@ function Jobs({ navigation }) {
         axios.get(`https://www.themuse.com/api/public/jobs?page=${currentPage}`)
             .then(res => {
                 setJobs([...jobs, ...res?.data?.results])
+                setLoading(false)
+            }).catch(err => {
+                Alert.alert('An error was encountered', `${err}`, [
+                    { text: 'OK' },
+                ]);
+                console.log(err)
+                setLoading(false)
             })
     }
+
     const renderJob = ({ item }) => {
         const handleSelectJob = () => {
             navigation.navigate("Job Detail", { job: item })
         }
         return (<JobCard job={item} onPress={handleSelectJob} />)
     }
+
     const renderLoader = () => {
         return (
-            <ActivityIndicator size="large" color="#ef5350" />
+            loading && <ActivityIndicator size="large" color="#ef5350" />
         )
     }
 
     const loadMoreItem = () => {
-        setCurrentPage(a => a + 1)
+        setCurrentPage(p => p + 1)
+        setLoading(true)
     }
 
     const topButtonHandler = () => {
         listViewRef.scrollToOffset({ offset: 0 })
     }
+
     return (
         <View>
-
             <FlatList
                 data={jobs}
                 keyExtractor={item => { `job-${item.id}` }}
@@ -53,24 +63,30 @@ function Jobs({ navigation }) {
                 onEndReached={loadMoreItem}
                 onEndReachedThreshold={0}
                 onScroll={a => {
-
-                    if (a?.nativeEvent?.contentOffset?.y > height) {
-                        setArrowStatus(true)
-                    }else{
-                        setArrowStatus(false)
-
-                    }
+                    setArrowStatus(a?.nativeEvent?.contentOffset?.y)
                 }}
                 ref={(ref) => {
                     listViewRef = ref;
                 }}
             />
-            {arrowStatus ? <TouchableOpacity onPress={topButtonHandler} style={{ backgroundColor: 'rgba(21,76,121,0.3)', borderRadius: 30, position: 'absolute', right: 15, bottom: 30 }}>
-                <Image tintColor="#ef5350" source={require("../../assets/images/up-arrow.png")} />
-            </TouchableOpacity> : null}
 
+            {
+                arrowStatus > height ? <TouchableOpacity onPress={topButtonHandler} style={styles.upArrowButton}>
+                    <Image tintColor="#ef5350" source={require("../../assets/images/up-arrow.png")} />
+                </TouchableOpacity> : null
+            }
         </View>
     )
 }
 
 export default Jobs;
+
+const styles = StyleSheet.create({
+    upArrowButton: {
+        backgroundColor: 'rgba(21,76,121,0.3)',
+        borderRadius: 30,
+        position: 'absolute',
+        right: 15,
+        bottom: 30
+    }
+})
