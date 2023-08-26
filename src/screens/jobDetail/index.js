@@ -9,6 +9,7 @@ const { width } = Dimensions.get("screen");
 const imageW = width / 15;
 
 function JobDetail({ route }) {
+
     const dispatch = useDispatch();
     const { job } = route.params;
     const favorites = useSelector(f => f?.favoriteList)
@@ -28,21 +29,27 @@ function JobDetail({ route }) {
             <ScrollView>
 
                 <View style={styles.title_container}>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#37474f' }}>{job?.name}</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ fontSize: 14, color: '#ef5350', fontWeight: 'bold' }}>Locations: </Text>
-                        <Text style={{ fontSize: 14, color: 'black', fontWeight: 'bold' }}>{job?.locations[0]?.name}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ fontSize: 14, color: '#ef5350', fontWeight: 'bold' }}>Job Level: </Text>
-                        <Text style={{ fontSize: 14, color: 'black', fontWeight: 'bold' }}>{job?.levels[0]?.name}</Text>
-                    </View>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: '#37474f' }}>Job Detail</Text>
-                </View>
-                <View style={styles.content}>
 
-                    <RenderHTML defaultTextProps={{selectable:true}} contentWidth={width} source={{ html: `${job?.contents}` }} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#37474f' }}>{job?.name}</Text>
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ color: '#ef5350', fontWeight: 'bold' }}>Locations: </Text>
+                        <Text style={{ color: 'black', fontWeight: 'bold' }}>{job?.locations[0]?.name}</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ color: '#ef5350', fontWeight: 'bold' }}>Job Level: </Text>
+                        <Text style={{ color: 'black', fontWeight: 'bold' }}>{job?.levels[0]?.name}</Text>
+                    </View>
+
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: '#37474f' }}>Job Detail</Text>
+
                 </View>
+
+                <View style={styles.content}>
+                    <RenderHTML defaultTextProps={{ selectable: true }} contentWidth={width} source={{ html: `${job?.contents}` }} />
+                </View>
+
             </ScrollView>
 
             <View style={styles.button_container}>
@@ -50,6 +57,7 @@ function JobDetail({ route }) {
                     <Image style={styles.icons} source={require("../../assets/images/submit.png")} />
                     <Text style={styles.button_title}>Submit</Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity style={styles.button} onPress={() => handleAddFavorite()}>
                     <Image style={isFavorited ? styles.red_icon : styles.icons} source={require("../../assets/images/favorite.png")} />
                     <Text style={styles.button_title}>{isFavorited ? 'Favorited' : 'Favotite Job'}</Text>

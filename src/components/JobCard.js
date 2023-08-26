@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
 
@@ -6,7 +6,7 @@ const JobCard = ({ onPress, job, removeOnPress }) => {
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <Text style={styles.title}>{job?.name}</Text>
-            <Text style={styles.a}>{job?.company?.name}</Text>
+            <Text style={styles.company_name}>{job?.company?.name}</Text>
             <Text style={styles.location}> {job?.locations[0]?.name}</Text>
             <Text style={styles.level}>{job?.levels[0]?.name}</Text>
 
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: 'black'
     },
-    a: {
+    company_name: {
         fontSize: 16,
         color: 'black',
         marginVertical: 2,
