@@ -41,7 +41,7 @@ function JobDetail({ route }) {
                 </View>
                 <View style={styles.content}>
 
-                    <RenderHTML contentWidth={width} source={{ html: `${job?.contents}` }} />
+                    <RenderHTML defaultTextProps={{selectable:true}} contentWidth={width} source={{ html: `${job?.contents}` }} />
                 </View>
             </ScrollView>
 

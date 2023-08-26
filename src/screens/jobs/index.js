@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, FlatList, ActivityIndicator, TouchableOpacity, Image } from "react-native";
+import { View, Text, ScrollView, Dimensions, FlatList, ActivityIndicator, TouchableOpacity, Image } from "react-native";
 import JobCard from "../../components/JobCard";
 import axios from "axios";
 
-
+const { height } = Dimensions.get('screen')
 
 function Jobs({ navigation }) {
 
     let listViewRef;
     const [currentPage, setCurrentPage] = useState(0);
-    const [arrowStatus, setArrowStatus] = useState(null);
+    const [arrowStatus, setArrowStatus] = useState(false);
+    const [loading, setLoading] = useState(null);
     const [jobs, setJobs] = useState([]);
 
     useEffect(() => {
@@ -51,13 +52,22 @@ function Jobs({ navigation }) {
                 ListFooterComponent={renderLoader}
                 onEndReached={loadMoreItem}
                 onEndReachedThreshold={0}
+                onScroll={a => {
+
+                    if (a?.nativeEvent?.contentOffset?.y > height) {
+                        setArrowStatus(true)
+                    }else{
+                        setArrowStatus(false)
+
+                    }
+                }}
                 ref={(ref) => {
                     listViewRef = ref;
                 }}
             />
-            {arrowStatus?<TouchableOpacity onPress={topButtonHandler} style={{ backgroundColor: 'rgba(21,76,121,0.3)', borderRadius: 30, position: 'absolute', right: 15, bottom: 30 }}>
+            {arrowStatus ? <TouchableOpacity onPress={topButtonHandler} style={{ backgroundColor: 'rgba(21,76,121,0.3)', borderRadius: 30, position: 'absolute', right: 15, bottom: 30 }}>
                 <Image tintColor="#ef5350" source={require("../../assets/images/up-arrow.png")} />
-            </TouchableOpacity>:null}
+            </TouchableOpacity> : null}
 
         </View>
     )
