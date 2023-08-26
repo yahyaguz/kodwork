@@ -57,7 +57,7 @@ function Jobs({ navigation }) {
         <View>
             <FlatList
                 data={jobs}
-                keyExtractor={item => { `job-${item.id}` }}
+                keyExtractor={item => `job-${item.id}`}
                 renderItem={renderJob}
                 ListFooterComponent={renderLoader}
                 onEndReached={loadMoreItem}
